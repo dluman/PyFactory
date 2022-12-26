@@ -1,5 +1,7 @@
 # springform
 
+[![PyPI version](https://img.shields.io/pypi/v/springform)](https://pypi.org/project/springform/)
+
 An simple templating system for Python class files.
 
 ## Installation
@@ -11,7 +13,7 @@ Find this tool on `PyPI`: `pip install springform`
 Given the following template file (let's call it `Item.py`):
 
 ```python
-class Item:
+class Item(object):
 
     copy = False
 
@@ -31,7 +33,7 @@ def __dumb(self):
     print("It really is.")
 
 def main():
-    template = Template(mod = "Item")
+    template = Template(mod = "Item", cls = "Item")
     template.make("ItemCopy", copy = True, __dumb = __dumb)
 
 if __name__ == "__main__":
