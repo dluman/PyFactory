@@ -41,7 +41,7 @@ the value of the `copy` instance variable).
 
 ## Notes
 
-The module doesn't handle inheritance very well right now; I need to fix that for the
-actual application for which this is destined.
+The module can handle single or multiple inheritance as of `0.2.0` -- find it everywhere
+reputable Python modules are listed (i.e. only `PyPI`, rly).
 
 Obligatory "it's under construction" statement.
