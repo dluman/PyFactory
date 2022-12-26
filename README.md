@@ -1,6 +1,6 @@
 # springform
 
-An simple templating system for Python class.
+An simple templating system for Python class files.
 
 ## Installation
 
@@ -39,6 +39,9 @@ The module should make a new file in the current working directory: `ItemCopy.py
 whose `__str__` magic will report to you that it's a _copy_ (the above example changes
 the value of the `copy` instance variable).
 
-## Note
+## Notes
+
+The module doesn't handle inheritance very well right now; I need to fix that for the
+actual application for which this is destined.
 
 Obligatory "it's under construction" statement.
