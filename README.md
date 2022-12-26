@@ -27,13 +27,13 @@ class Item(object):
 and a reasonable driver (aw heck, let's call it `main.py`):
 
 ```python
-from springform import Template
+from springform import Form
 
 def __dumb(self):
     print("It really is.")
 
 def main():
-    template = Template(mod = "Item", cls = "Item")
+    template = Form(mod = "Item", cls = "Item")
     template.make("ItemCopy", copy = True, __dumb = __dumb)
 
 if __name__ == "__main__":
