@@ -1,9 +1,9 @@
 class Item:
 
-    consumable = True
+    copy = False
 
     def __init__(self):
         pass
 
     def __str__(self):
-        return self.consumable
+        return f"Copy status: {self.copy}"
