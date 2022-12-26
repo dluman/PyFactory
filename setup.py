@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="springform",
-    version="0.1.0",
+    version="0.2.0",
     packages=['springform'],
     package_dir={'springform': 'src'},
     include_package_data=True,
