@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="springform",
-    version="0.2.0",
+    version="0.2.1",
     packages=['springform'],
     package_dir={'springform': 'src'},
     include_package_data=True,
@@ -21,9 +21,7 @@ Always a work in progress.
 Notes
 =====
 Requires a template file or pre-existing module to load information from. Can even copy system built-ins and
-other modules on PATH.
-
-Additional note: the module cannot handle explicit inheritance yet. I need to fix that.
+other modules on PATH. As of 0.2.0, inheritances are possible.
     """,
     long_description_content_type="text/x-rst",
     install_requires=[

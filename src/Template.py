@@ -51,7 +51,12 @@ class Template:
     def make(self, name: str = "", **kwargs) -> None:
         for kwarg in kwargs:
             val = kwargs[kwarg]
-            self.__elements["vars"][kwarg] = val
+            # TODO: Organize this and the similar call
+            #       above -- you do too much work
+            if inspect.isfunction(val):
+                self.__elements["func"][kwarg] = inspect.getsource(val)
+            else:
+               self.__elements["vars"][kwarg] = val
         lines = [f"class {name}{self.__bases}:\n"]
         for var in self.__elements["vars"]:
             val = self.__elements["vars"][var]
@@ -59,6 +64,8 @@ class Template:
         lines.append("")
         for func in self.__elements["func"]:
             code = self.__elements["func"][func]
+            if not code.startswith(" "): 
+                code = f"    {code.replace('    ','        ')}"
             lines.append(code)
         with open(f"{name}.py", "w") as fh:
             for line in lines:
