@@ -1,10 +1,10 @@
-# PyFactory
+# springform
 
 An simple templating system for Python class.
 
 ## Installation
 
-Find this tool on `PyPI`: `pip install py-factory`
+Find this tool on `PyPI`: `pip install springform`
 
 ## Usage
 
@@ -25,10 +25,10 @@ class Item:
 and a reasonable driver (aw heck, let's call it `main.py`):
 
 ```python
-from py_factory import Factory
+from springform import Template
 
 def main():
-    template = Factory(mod = "Item", cls = "Item")
+    template = Template(mod = "Item", cls = "Item")
     template.make("ItemCopy", copy = True)
 
 if __name__ == "__main__":

@@ -1,15 +1,15 @@
 import setuptools
 
 setuptools.setup(
-    name="py-factory",
+    name="springform",
     version="0.1.0",
-    packages=['py_factory'],
-    package_dir={'py_factory': 'src'},
+    packages=['springform'],
+    package_dir={'springform': 'src'},
     include_package_data=True,
     description="A simple templating system for Python class files.",
     long_description="""
 =======
-PyFactory
+springform
 =======
 
 An simple templating system for Python class files which allows users to create, use, and expand on templates
@@ -29,5 +29,5 @@ Additional note: the module can't handle explicit inheritance yet. I need to fix
     install_requires=[
       '',
     ],
-    url="https://github.com/dluman/pyfactory"
+    url="https://github.com/dluman/springform"
  )

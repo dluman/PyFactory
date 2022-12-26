@@ -1,0 +1,9 @@
+README.md
+setup.py
+springform.egg-info/PKG-INFO
+springform.egg-info/SOURCES.txt
+springform.egg-info/dependency_links.txt
+springform.egg-info/top_level.txt
+src/Model.py
+src/Template.py
+src/__init__.py

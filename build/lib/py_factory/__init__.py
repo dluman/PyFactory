@@ -1,2 +1,2 @@
-from .Model import *
+from .Factory import *
 from .Template import *

@@ -1,7 +1,7 @@
-from py_factory import Factory
+from springform import Template
 
 def main():
-    template = Factory(mod = "Item", cls = "Item")
+    template = Template(mod = "Item", cls = "Item")
     template.make("NewItem", copy = True)
 
 if __name__ == "__main__":
