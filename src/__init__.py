@@ -1,2 +1,2 @@
 from .Model import *
-from .Template import *
+from .Forms import Form

@@ -3,7 +3,7 @@ import importlib
 
 from .Model import Model
 
-class Template:
+class Form:
 
     @staticmethod
     def __isdunder(name: str = "") -> bool:
@@ -64,7 +64,7 @@ class Template:
         lines.append("")
         for func in self.__elements["func"]:
             code = self.__elements["func"][func]
-            if not code.startswith(" "): 
+            if not code.startswith(" "):
                 code = f"    {code.replace('    ','        ')}"
             lines.append(code)
         with open(f"{name}.py", "w") as fh:
