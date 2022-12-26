@@ -1,4 +1,4 @@
-from Factory import Factory
+from py_factory import Factory
 
 def main():
     template = Factory(mod = "Item", cls = "Item")
