@@ -13,6 +13,8 @@ Find this tool on `PyPI`: `pip install springform`
 Given the following template file (let's call it `Item.py`):
 
 ```python
+from time import sleep
+
 class Item(object):
 
     copy = False
