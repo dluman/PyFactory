@@ -7,9 +7,11 @@ class Form:
 
     @staticmethod
     def __isdunder(name: str = "") -> bool:
+        """ Tests if a variable is a dunder """
         return name.startswith("__")
 
     def __init__(self, mod: str = "", cls: str = ""):
+        """ Constructor """
         self.__mod = mod
         self.__cls = cls
         self.template = Model(
@@ -17,15 +19,18 @@ class Form:
             cls = self.__cls
         )
         self.__elements = {
+            "impt": {},
+            "bases": {},
             "func": {},
             "vars": {}
         }
-        self.__imports = self.__imported()
-        self.__bases = self.__inherit()
+        self.__imported()
+        self.__inherit()
         self.__assemble()
 
     def __imported(self) -> list:
-        imports = []
+        """ Retrieves list of extant imports """
+        imports = {}
         mod = importlib.import_module(self.__mod)
         members = inspect.getmembers(mod)
         for member in members:
@@ -36,25 +41,13 @@ class Form:
                     parent = value.__module__
                 except AttributeError:
                     pass
-                imports.append({
-                    "from": parent,
-                    "import": name
-                })
-        return imports
+                imports[name] = {"from": parent}
+        self.__elements["impt"] = imports
 
-    def __inherit(self) -> str:
-        bases = []
-        if self.__cls:
-            mdl = eval(f"importlib.import_module('{self.__mod}').{self.__cls}")
-            for base in mdl.__bases__:
-                bases.append(base.__name__)
-        if bases:
-            return f"({','.join(name for name in bases)})"
-        return ""
-
-    def __assemble(self) -> None:
-        members = getattr(self.template, self.__mod)
-        for member in inspect.getmembers(members):
+    def __update(self, members: list = [()]) -> None:
+        """ Updates code member values """
+        # TODO: Write in a "membership" for ast writing later?
+        for member in members:
             name, value = member
             if inspect.isfunction(value):
                 src = inspect.getsource(value)
@@ -63,36 +56,65 @@ class Form:
                 try:
                     value.__objclass__
                     continue
-                except AttributeError:
-                    pass
+                except AttributeError: pass
                 self.__elements["vars"][name] = value
 
-    def make(self, name: str = "", **kwargs) -> None:
+    def __inherit(self) -> None:
+        """ Processes inherited classes """
+        bases = []
+        if self.__cls:
+            # TODO: Find a better way to get this information with libCST or ast
+            mdl = eval(f"importlib.import_module('{self.__mod}').{self.__cls}")
+            for base in mdl.__bases__:
+                bases.append(base.__name__)
+        self.__elements["bases"] = bases
+
+    def __assemble(self) -> None:
+        """ Assembles all of the preprocessed parts """
+        members = inspect.getmembers(
+            getattr(self.template, self.__mod)
+        )
+        self.__update(members)
+
+    def remove(self, removal: str = "") -> None:
+        for category in self.__elements:
+            elements = self.__elements[category]
+            if removal in elements:
+                if type(elements) == list:
+                    elements.remove(removal)
+                if type(elements) == dict:
+                    del elements[removal]
+
+    def make(self, name: str = "", imports: dict = {}, **kwargs) -> None:
+        # TODO: Rewrite with ast pronto
+        """A sorry mess."""
         lines = []
-        for kwarg in kwargs:
-            val = kwargs[kwarg]
-            # TODO: Organize this and the similar call
-            #       above -- you do too much work
-            if inspect.isfunction(val):
-                self.__elements["func"][kwarg] = inspect.getsource(val)
-            else:
-               self.__elements["vars"][kwarg] = val
-        for imported in self.__imports:
+        # Update members with provided kwargs
+        self.__update(
+            list(kwargs.items())
+        )
+        # Establish new imports/dependencies
+        for lib in self.__elements["impt"]:
             stmt = ""
-            if imported["from"]: stmt = f"from {imported['from']} "
-            stmt += f"import {imported['import']}"
+            mod = self.__elements["impt"][lib]
+            if mod["from"]: stmt = f"from {mod['from']} "
+            stmt += f"import {lib}"
             lines.append(f"{stmt}")
         lines.append("")
-        lines.append(f"class {name}{self.__bases}:\n")
+        # Create class declaration
+        lines.append(f"class {name}({','.join(self.__elements['bases'])}):\n")
+        # Create global variables
         for var in self.__elements["vars"]:
             val = self.__elements["vars"][var]
             lines.append(f"{' '*4}{var} = {val}")
         lines.append("")
+        # Provide methods/functions
         for func in self.__elements["func"]:
             code = self.__elements["func"][func]
             if not code.startswith(" "):
                 code = f"{' ' * 4}{code.replace(' ' * 4,' ' * 8)}"
             lines.append(code)
+        # Write file
         with open(f"{name}.py", "w") as fh:
             for line in lines:
                 fh.write(line + "\n")

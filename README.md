@@ -13,6 +13,7 @@ Find this tool on `PyPI`: `pip install springform`
 Given the following template file (let's call it `Item.py`):
 
 ```python
+import time
 from time import sleep
 
 class Item(object):
@@ -36,6 +37,7 @@ def __dumb(self):
 
 def main():
     template = Form(mod = "Item", cls = "Item")
+    template.remove("time")
     template.make("ItemCopy", copy = True, __dumb = __dumb)
 
 if __name__ == "__main__":

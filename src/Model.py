@@ -8,8 +8,8 @@ class Model:
         self.__import()
 
     def __import(self):
-        self.__mdl = importlib.import_module(self.__mod)
+        self.__instance = importlib.import_module(self.__mod)
         if self.__cls is None:
-            self.__cls = [c for c in self.__mdl.__dict__ if not c.startswith("_")]
+            self.__cls = [c for c in self.__instance.__dict__ if not c.startswith("_")]
         for name in self.__cls:
-            setattr(self, name, getattr(self.__mdl, name))
+            setattr(self, name, getattr(self.__instance, name))
