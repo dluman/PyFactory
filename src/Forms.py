@@ -20,7 +20,7 @@ class Form:
         )
         self.__elements = {
             "impt": {},
-            "bases": {},
+            "bases": [],
             "func": {},
             "vars": {}
         }
@@ -64,6 +64,7 @@ class Form:
         bases = []
         if self.__cls:
             # TODO: Find a better way to get this information with libCST or ast
+            #       (Maybe it already exists in the _Model__instance?)
             mdl = eval(f"importlib.import_module('{self.__mod}').{self.__cls}")
             for base in mdl.__bases__:
                 bases.append(base.__name__)
@@ -76,7 +77,18 @@ class Form:
         )
         self.__update(members)
 
+    def add_base(self, base: any) -> None:
+        """ Adds new base if not a duplicate """
+        if inspect.isclass(base):
+            base = base.__name__
+        if base not in self.__elements["bases"]:
+            self.__elements["bases"].append(base)
+        self.__elements["bases"].sort()
+
     def remove(self, removal: str = "") -> None:
+        """ Removes an element by any root name """
+        if inspect.isclass(removal):
+            removal = removal.__name__
         for category in self.__elements:
             elements = self.__elements[category]
             if removal in elements:

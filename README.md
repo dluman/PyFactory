@@ -16,7 +16,7 @@ Given the following template file (let's call it `Item.py`):
 import time
 from time import sleep
 
-class Item(object):
+class Item:
 
     copy = False
 
@@ -38,6 +38,7 @@ def __dumb(self):
 def main():
     template = Form(mod = "Item", cls = "Item")
     template.remove("time")
+    template.add_base(object)
     template.make("ItemCopy", copy = True, __dumb = __dumb)
 
 if __name__ == "__main__":
@@ -47,6 +48,9 @@ if __name__ == "__main__":
 The module should make a new file in the current working directory: `ItemCopy.py`
 whose `__str__` magic will report to you that it's a _copy_ (the above example changes
 the value of the `copy` instance variable).
+
+As of a couple of minor versions ago (of course I forget which), you may not _remove_
+things from the template by name _and_ add inhertiances (well, as of `0.6.0` at least).
 
 ## Notes
 
