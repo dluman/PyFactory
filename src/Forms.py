@@ -65,8 +65,8 @@ class Form:
         if self.__cls:
             # TODO: Find a better way to get this information with libCST or ast
             #       (Maybe it already exists in the _Model__instance?)
-            mdl = eval(f"importlib.import_module('{self.__mod}').{self.__cls}")
-            for base in mdl.__bases__:
+            mdl = eval(f"importlib.import_module('{self.__mod}')")
+            for base in mdl.self.__cls.__bases__:
                 bases.append(base.__name__)
         self.__elements["bases"] = bases
 
