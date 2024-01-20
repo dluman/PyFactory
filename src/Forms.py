@@ -17,11 +17,6 @@ class Form:
     """ Constructor """
     self.instance = self.__load_module(filename = filename)
 
-  def __concat_args(self, *args, **kwargs) -> dict:
-    arguments = [args]
-    arguments.append(kwargs)
-    return arguments
-
   def __load_module(self, filename: str = "", arguments: list = []):
     try:
       with open(filename, "rb") as fh:
@@ -36,9 +31,6 @@ class Form:
         return instance
     except:
       raise BadModuleFormatException
-
-  def __set_template_name(self, filename: str = "") -> str:
-    return ".".join(filename.split(".")[:-1])
 
   def __mainify(self):
     if self.instance.__module__ != "__main__":
