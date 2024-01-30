@@ -39,7 +39,7 @@ class Form:
       co = compile(source, '<string>', 'exec')
       exec(co, __main__.__dict__)
 
-  def make_dillable(self, path: str = ""):
+  def make_dillable(self, path: str = "") -> str:
     import __main__
     self.__mainify()
     cls = getattr(__main__, self.instance.__name__)
@@ -48,6 +48,7 @@ class Form:
     self.instance = cls
     with open(f"{path}{self.instance.__name__}", "wb") as fh:
       dill.dump(self.instance, fh)
+    return self.instance.__name__
 
   def add_props(self, **kwargs) -> None:
     for arg in kwargs:
