@@ -4,11 +4,9 @@ import inspect
 from types import MethodType
 from typing import Callable
 from importlib import import_module
-from black import format_str, FileMode
 
 import bypassmappingproxy as bmp
 
-from .Format import Format
 from .Errors import BadModuleFormatException
 
 class Form:
