@@ -2,13 +2,16 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/springform)](https://pypi.org/project/springform/)
 
-An simple templating system for Python class files.
+A simple templating system for Python class files.
 
 ## Installation
 
 Find this tool on `PyPI`: `pip install springform`
 
 ## Usage
+
+> **Note**: The following applies to the version currently on `PyPI`. Code in the `main` branch
+> now takes a different approach. Documentation to follow.
 
 Given the following template file (let's call it `Item.py`):
 
