@@ -1,2 +1,0 @@
-bypassmappingproxy==0.1.0
-dill==0.3.6
