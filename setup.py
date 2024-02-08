@@ -24,7 +24,8 @@ other modules on PATH. As of 0.2.0, inheritances are possible.
     """,
     long_description_content_type="text/x-rst",
     install_requires=[
-      '',
+      "dill",
+      "bypassmappingproxy"
     ],
     url="https://github.com/dluman/springform"
 )
