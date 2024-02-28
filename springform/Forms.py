@@ -41,11 +41,10 @@ class Form:
     import __main__
     self.__mainify()
     cls = getattr(__main__, self.instance.__name__)
-    for prop in self.instance.__dict__:
-      bmp.type_set(cls, prop, self.instance.__dict__[prop])
-    self.instance = cls
+    #for prop in self.instance.__dict__:
+    #  bmp.type_set(cls, prop, self.instance.__dict__[prop])
     with open(f"{path}{self.instance.__name__}", "wb") as fh:
-      dill.dump(self.instance, fh)
+      dill.dump(cls, fh)
     return self.instance.__name__
 
   def add_props(self, **kwargs) -> None:
