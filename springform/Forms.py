@@ -36,12 +36,12 @@ class Form:
   def __mainify(self):
     if self.instance.__module__ != "__main__":
       # Below only grabs the original code
-      #source = inspect.getsource(self.instance)
-      #co = compile(source, '<string>', 'exec')
-      #exec(co, __main__.__dict__)
-      self.instance.__module__ = "__main__"
-      __main__.__dict__[self.instance.__name__] = self.instance
-      print(__main__.__dict__)
+      source = inspect.getsource(self.instance)
+      co = compile(source, '<string>', 'exec')
+      exec(co, __main__.__dict__)
+      #self.instance.__module__ = "__main__"
+      #__main__.__dict__[self.instance.__name__] = self.instance
+      #print(__main__.__dict__)
       #__main__.__dict__[self.instance.__name__].__module__ = self.instance.__name__
       #print(__main__.__dict__)
 
