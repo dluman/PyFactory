@@ -1,7 +1,8 @@
 import dill
 import inspect
+import __main__
 
-from types import MethodType
+from types import MethodType, ModuleType
 from typing import Callable
 from importlib import import_module
 
@@ -24,23 +25,30 @@ class Form:
         except dill.UnpicklingError:
           # Failing the pickle test, import normal file
           mod = filename.split(".")[0]
-          module = import_module(mod)
-          instance = getattr(module, mod)
+          name = mod.replace("/", ".")
+          package = name.split(".")[-1]
+          module = import_module(name,package = package)
+          instance = getattr(module, package)
         return instance
     except:
       raise BadModuleFormatException
 
   def __mainify(self):
     if self.instance.__module__ != "__main__":
-      import __main__
-      source = inspect.getsource(self.instance)
-      co = compile(source, '<string>', 'exec')
-      exec(co, __main__.__dict__)
+      # Below only grabs the original code
+      #source = inspect.getsource(self.instance)
+      #co = compile(source, '<string>', 'exec')
+      #exec(co, __main__.__dict__)
+      self.instance.__module__ = "__main__"
+      __main__.__dict__[self.instance.__name__] = self.instance
+      print(__main__.__dict__)
+      #__main__.__dict__[self.instance.__name__].__module__ = self.instance.__name__
+      #print(__main__.__dict__)
 
   def make_dillable(self, path: str = "") -> str:
-    import __main__
     self.__mainify()
     cls = getattr(__main__, self.instance.__name__)
+    print(cls)
     #for prop in self.instance.__dict__:
     #  bmp.type_set(cls, prop, self.instance.__dict__[prop])
     with open(f"{path}{self.instance.__name__}", "wb") as fh:
@@ -52,4 +60,5 @@ class Form:
       setattr(self.instance, arg, kwargs[arg])
 
   def add_method(self, method: Callable = ()) -> None:
-    setattr(self.instance, method.__name__, MethodType(method, self.instance))
+    if callable(method):
+      setattr(self.instance, method.__name__, MethodType(method, self.instance))
