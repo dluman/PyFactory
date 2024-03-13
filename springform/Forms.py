@@ -39,18 +39,13 @@ class Form:
       source = inspect.getsource(self.instance)
       co = compile(source, '<string>', 'exec')
       exec(co, __main__.__dict__)
-      #self.instance.__module__ = "__main__"
-      #__main__.__dict__[self.instance.__name__] = self.instance
-      #print(__main__.__dict__)
-      #__main__.__dict__[self.instance.__name__].__module__ = self.instance.__name__
-      #print(__main__.__dict__)
+      for prop in self.instance.__dict__:
+        bmp.type_set(__main__.__dict__[self.instance.__name__], prop, __main__.__dict__[self.instance.__name__].__dict__[prop])
 
   def make_dillable(self, path: str = "") -> str:
     self.__mainify()
     cls = getattr(__main__, self.instance.__name__)
-    print(cls)
-    #for prop in self.instance.__dict__:
-    #  bmp.type_set(cls, prop, self.instance.__dict__[prop])
+    print(self.instance.__dict__)
     with open(f"{path}{self.instance.__name__}", "wb") as fh:
       dill.dump(cls, fh)
     return self.instance.__name__
