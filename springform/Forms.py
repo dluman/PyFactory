@@ -40,7 +40,7 @@ class Form:
       co = compile(source, '<string>', 'exec')
       exec(co, __main__.__dict__)
       for prop in self.instance.__dict__:
-        bmp.type_set(__main__.__dict__[self.instance.__name__], prop, __main__.__dict__[self.instance.__name__].__dict__[prop])
+        bmp.type_set(__main__.__dict__[self.instance.__name__], prop, self.instance.__dict__[prop])
 
   def make_dillable(self, path: str = "") -> str:
     self.__mainify()
