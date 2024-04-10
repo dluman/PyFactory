@@ -1,6 +1,7 @@
 import dill
 import inspect
 import __main__
+import ctypes
 
 from types import MethodType, ModuleType
 from typing import Callable
@@ -36,7 +37,9 @@ class Form:
   def __mainify(self):
     if self.instance.__module__ != "__main__":
       # Below only grabs the original code
-      source = inspect.getsource(self.instance)
+      #source = inspect.getsource(self.instance)
+      setattr(self.instance,"__module__","")
+      source = inspect.getsource(ctypes.cast(id(self.instance), ctypes.py_object).value)
       co = compile(source, '<string>', 'exec')
       exec(co, __main__.__dict__)
       for prop in self.instance.__dict__:
