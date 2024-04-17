@@ -67,12 +67,12 @@ class Form:
 
   def make_dillable(self, path: str = "") -> str:
     self.__mainify()
-    cls = getattr(__main__, self.instance.__name__)
-    print(self.instance.__dict__)
+    #cls = getattr(__main__, self.instance.__name__)
+    cls = __main__.__dict__[self.instance.__name__]
+    print(id(__main__.__dict__[self.instance.__name__]))
     with open(f"{path}{self.instance.__name__}", "wb") as fh:
       dill.dump(cls, fh)
     return self.instance.__name__
-
 
   def add_props(self, **kwargs) -> None:
     for arg in kwargs:
