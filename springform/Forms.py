@@ -38,7 +38,7 @@ class Form:
     if self.instance.__module__ != "__main__":
       # Below only grabs the original code
       #source = inspect.getsource(self.instance)
-      setattr(self.instance,"__module__","")
+      setattr(self.instance,"__module__",__main__)
       source = inspect.getsource(ctypes.cast(id(self.instance), ctypes.py_object).value)
       co = compile(source, '<string>', 'exec')
       exec(co, __main__.__dict__)
