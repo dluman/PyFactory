@@ -36,7 +36,6 @@ class Form:
 
 
   def __mainify(self):
-<<<<<<< HEAD
     if self.instance.__module__ != "__main__":
         # Create copy of the object at the address of the instance
         ptr = ctypes.cast(id(self.instance), ctypes.py_object)
