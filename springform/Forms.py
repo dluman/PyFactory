@@ -36,6 +36,7 @@ class Form:
 
 
   def __mainify(self):
+<<<<<<< HEAD
     if self.instance.__module__ != "__main__":
         # Create copy of the object at the address of the instance
         ptr = ctypes.cast(id(self.instance), ctypes.py_object)
@@ -66,6 +67,9 @@ class Form:
     for arg in kwargs:
       setattr(self.instance, arg, kwargs[arg])
 
-  def add_method(self, method: Callable = ()) -> None:
+  def add_method(self, method: Callable):
+    """ Dynamically add a method to the instance. """
     if callable(method):
-      setattr(self.instance, method.__name__, MethodType(method, self.instance))
+        method_name = method.__name__
+        bound_method = method.__get__(self.instance, self.instance.__class__)
+        setattr(self.instance, method_name, bound_method)
