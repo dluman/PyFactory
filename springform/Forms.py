@@ -37,42 +37,30 @@ class Form:
 
   def __mainify(self):
     if self.instance.__module__ != "__main__":
-        # Temporarily change the __module__ attribute to '__main__'
-        # Get a pointer to the instance object
+        # Create copy of the object at the address of the instance
         ptr = ctypes.cast(id(self.instance), ctypes.py_object)
-        
+
         # Change the __module__ to '__main__'
         ptr.value.__module__ = "__main__"
-        
-        # Optionally, copy the class definition to __main__ if not already there
-        class_name = self.instance.__name__
-        if class_name not in __main__.__dict__:
-            # Create a shallow copy of the class with a new name in __main__
-            new_class = type(class_name, self.instance.__class__.__bases__, dict(self.instance.__dict__))
-            __main__.__dict__[class_name] = new_class
-        
-        # Reassign the instance's class to the new class in __main__
-        #self.instance.__class__ = __main__.__dict__[class_name]
 
-  # def __mainify(self):
-  #   if self.instance.__module__ != "__main__":
-  #     # Below only grabs the original code
-  #     #source = inspect.getsource(self.instance)
-  #     setattr(self.instance,"__module__","")
-  #     source = inspect.getsource(ctypes.cast(id(self.instance), ctypes.py_object).value)
-  #     co = compile(source, '<string>', 'exec')
-  #     exec(co, __main__.__dict__)
-  #     for prop in self.instance.__dict__:
-  #       bmp.type_set(__main__.__dict__[self.instance.__name__], prop, self.instance.__dict__[prop])
+        # Optionally, copy the class definition to __main__ if not already there
+        class_name = ptr.value.__name__
+        if class_name not in __main__.__dict__:
+            # Set the mainify'd version to the object created at the pointer
+            __main__.__dict__[class_name] = ptr.value
+
+        # Return the full object context stored at the location of the pointer
+        return ptr.value
 
   def make_dillable(self, path: str = "") -> str:
-    self.__mainify()
-    #cls = getattr(__main__, self.instance.__name__)
-    cls = __main__.__dict__[self.instance.__name__]
-    print(id(__main__.__dict__[self.instance.__name__]))
-    with open(f"{path}{self.instance.__name__}", "wb") as fh:
+    ptr = self.__mainify()
+    cls = __main__.__dict__[ptr.__name__]
+
+    # TODO: The two objects are the same now, but trigger a recursion error
+
+    with open(f"{path}{ptr.__name__}", "wb") as fh:
       dill.dump(cls, fh)
-    return self.instance.__name__
+    return ptr.__name__
 
   def add_props(self, **kwargs) -> None:
     for arg in kwargs:
