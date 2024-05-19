@@ -28,9 +28,9 @@ class Form:
           mod = filename.split(".")[0]
           name = mod.replace("/", ".")
           package = name.split(".")[-1]
-          module = import_module(name,package = package)
-          instance = getattr(module, package)
-        return instance
+          module = import_module(name)
+          #instance = getattr(module, package)
+        return module #instance
     except:
       raise BadModuleFormatException
 
